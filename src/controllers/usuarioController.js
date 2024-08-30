@@ -10,8 +10,24 @@ const entrar = async (nick) => {
             "nick": nick
         }
     }
+    return {
+        "erro": "erro ao entrar"
+    }
 }
 
+const getCurrentRoom = async (idUser) => {
+    if(isAValidID(idUser)){
+        let salaAtual = (await usuarioModel.get(idUser)).salaAtual
+        if(salaAtual) return salaAtual.toString();
+        return null
+    }
+    return false;
+}
 
+const isAValidID = (id) => {
+    if(typeof id == 'string')
+        return id.match(/^[0-9a-f]+$/i) && id.length == 24;
+    return false;
+}
 
-module.exports = { entrar }
+module.exports = { entrar, getCurrentRoom }

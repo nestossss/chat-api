@@ -11,19 +11,41 @@ const connect = async () => {
     return singleton;
 }
 
+const find = async (collection, query) => {
+    const db = await connect();
+    return await db.collection(collection).find(query).toArray();
+}
+
+const findOne = async (collection, stringId) => {
+    const db = await connect();
+    return (await db.collection(collection).find({
+        _id: new ObjectId(stringId+"")
+    }).toArray())[0];
+}
+
 const findAll = async (collection) =>{
     const db = await connect();
     return await db.collection(collection).find().toArray();
 }
 
-const findMany = async (collection, findKey, stringId) => {
+const findManyByID = async (collection, findKey, stringId) => {
     const db = await connect();
     return await db.collection(collection).find({ [findKey]: new ObjectId(stringId+"") }).toArray();
 }
 
-const insertOne = async(collection, objeto) => {
+const findMany = async (collection, queryKey, queryItem) => {
     const db = await connect();
-    return db.collection(collection).insertOne(objeto);
+    return await db.collection(collection).find({ [queryKey]: queryItem }).toArray();
 }
 
-module.exports = { findAll, findMany, insertOne }
+const updateOne = async (collection, stringId, updateQuery) => {
+    const db = await connect();
+    return await db.collection(collection).updateOne({ _id: new ObjectId(stringId+"")}, updateQuery);
+}
+
+const insertOne = async(collection, objeto) => {
+    const db = await connect();
+    return await db.collection(collection).insertOne(objeto);
+}
+
+module.exports = { find, findOne, findAll, findMany, findManyByID, updateOne, insertOne }

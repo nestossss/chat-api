@@ -1,10 +1,11 @@
 const express = require("express");
+const cors = require('cors');
 const { Server } = require('socket.io')
 const { createServer } = require('node:http');
-
 require('dotenv').config();
 
-const mainRoute = require("../src/app")
+const mainRoute = require("../src/app");
+const { chatSocket } = require("../src/controllers/chatSocket");
 
 const port = process.env.PORT;
 const host = process.env.HOST;
@@ -16,19 +17,12 @@ const io = new Server(server, {
     path: '/chat',
 });
 
-io.on('connect', (socket) => {
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-    socket.on('send msg', ({msg, idsala}) => {
-        io.emit('on chat:'+idsala, msg);
-    })  
-})
+io.on('connect', chatSocket)
 
+app.use(cors());
 app.use("/", express.urlencoded({
     extended: true
 }))
-
 app.use("/", mainRoute)
 
 

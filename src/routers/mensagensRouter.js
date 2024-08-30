@@ -10,9 +10,13 @@ router.get("/", checkTokenMid, async (req, res) => {
    res.status(200).send(resp);
 })
 
-router.post("/criar", checkTokenMid, async (req, res) => {
-        let resp = await msgController.criar();
-        res.status(200).send(resp)
+router.post("/", checkTokenMid, async (req, res) => {
+   if(!req?.query?.idSala && !req.headers?.id && !req.body?.message)
+      return res.status(400).send("faltando idSala");
+   let resp = await msgController.post(req.query.idSala, req.headers.id, req.body.message);
+   if(!resp)
+      return res.status(500).send("não foi possivel enviar mensagem?");
+   res.status(200).send(resp);
 })
 
 module.exports = router;
