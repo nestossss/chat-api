@@ -3,6 +3,10 @@ const db = require('../models/db');
 
 const getSalas = async () => {
     let salas = await db.findAll("salas");
+    salas.forEach( (sala) => {
+        delete sala.mensagens;
+    })
+
     return salas;
 }
 
