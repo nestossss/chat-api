@@ -6,7 +6,7 @@ const usuarioRouter = require("./routers/usuarioRouter")
 router.use("/salas", salaRouter);
 router.use("/usuario", usuarioRouter);
 
-router.get("/sobre", (req, res) =>{
+router.get("/", (req, res) =>{
     res.status(200).send({
         "nome": "API - CHAT",
         "versao": "0.1.0",
