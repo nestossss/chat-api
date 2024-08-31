@@ -6,7 +6,6 @@ const getSalas = async () => {
     salas.forEach( (sala) => {
         delete sala.mensagens;
     })
-
     return salas;
 }
 
@@ -79,9 +78,9 @@ const insertMensgem = async (idSala, idUser, msg) => {
     let nick = user.nick
     let timestamp = Date.now();
 
-    if(user.salaAtual.toString() != idSala)
+    if(user?.salaAtual?.toString() != idSala)
         return {
-            'message': 'sala errada filhaooo',
+            'message': 'entre nessa sala para enviar uma mensagem',
         }
     let query = {
         $push: { 
