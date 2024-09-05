@@ -6,15 +6,20 @@ require('dotenv').config();
 
 const mainRoute = require("../src/app");
 const { chatSocket } = require("../src/controllers/chatSocket");
-
 const port = process.env.PORT;
 const host = process.env.HOST;
 
 const app = express();
 const server = createServer(app);
+const whitelist = ['']
 
 const io = new Server(server, {
     path: '/chat',
+    cors: {
+        origin: function (origin, callback) {
+            callback(null, true);
+        }
+    }
 });
 
 io.on('connect', chatSocket)
@@ -24,7 +29,6 @@ app.use("/", express.urlencoded({
     extended: true
 }))
 app.use("/", mainRoute)
-
 
 server.listen(port, () => {
     console.log(`server running on port ${host}:${port}`)

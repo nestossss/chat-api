@@ -17,7 +17,7 @@ const entrar = async (nick) => {
 
 const getCurrentRoom = async (idUser) => {
     if(isAValidID(idUser)){
-        let salaAtual = (await usuarioModel.get(idUser)).salaAtual
+        let salaAtual = (await usuarioModel.get(idUser))?.salaAtual
         if(salaAtual) return salaAtual.toString();
         return null
     }
